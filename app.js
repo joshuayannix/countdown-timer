@@ -23,10 +23,17 @@ const weekdays = [
 ];
 
 const giveaway = document.querySelector('.giveaway');
-const deadline = document.querySelector('deadline');
+const deadline = document.querySelector('.deadline');
 const items = document.querySelectorAll('.deadline-format h4')
 
-let futureDate = new Date(2020,7,25,13,53,0);
+let curDate = new Date();
+let curYear = curDate.getFullYear()
+let curMonth = curDate.getMonth()
+let curHour = curDate.getHours()
+let curMins = curDate.getMinutes()
+let curDay = curDate.getDate();
+let futureDate = new Date(curYear,curMonth,curDay + 10,curHour,curMins,0);
+
 
 const year = futureDate.getFullYear();
 const hours = futureDate.getHours();
@@ -70,9 +77,14 @@ const getRemainingTime = () => {
   items.forEach((item, index) => {
     item.innerHTML = format(values[index]);
   })
- 
-  // countdown
-  
+
+  if(t < 0){
+    clearInterval(countdown);
+    deadline.innerHTML = `<h4 class="expired">sorry, this giveaway has expired</h4>`
+  }
 }
+
+// countdown
+let countdown = setInterval(getRemainingTime, 1000)
 
 getRemainingTime()
